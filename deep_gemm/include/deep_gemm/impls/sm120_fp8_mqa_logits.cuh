@@ -64,6 +64,8 @@ void sm120_fp8_mqa_logits(const uint32_t seq_len, const uint32_t seq_len_kv,
     // A hardcoded 128 here only matches D=128; for D=32/64 the readers would un-swizzle
     // with the wrong pattern and consume out-of-tile shared memory.
     static constexpr uint32_t kSwizzleMode = kHeadDim;
+    DG_STATIC_ASSERT(kHeadDim == 32 or kHeadDim == 64 or kHeadDim == 128,
+                     "kSwizzleMode must stay within the hardware swizzle modes");
     static constexpr uint32_t kSwizzleAlignment = kHeadDim * 8;
     static constexpr uint32_t kSMEMKBytes = kHeadDim;
 
